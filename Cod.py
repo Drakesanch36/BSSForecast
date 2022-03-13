@@ -18,6 +18,7 @@ clt_order['% Total Sales'] = clt_order.loc[:,'Total':].sum(axis=1)/tt_custom*100
 # pd.set_option("display.max_rows", None, "display.max_columns", None)
 print('Top 10 Customers:')
 print(clt_order.head(n=10).to_string(index=False))
+clt_order.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\top10customers.xlsx', index = False, header=True)
 
 
 #this displays the most popular bought products
@@ -31,6 +32,7 @@ sku_order['% Total Sales'] = sku_order.loc[:,'Total':].sum(axis=1)/tt_sku*100
 # pd.set_option("display.max_rows", None, "display.max_columns", None)
 print('Highest Selling Prodocts:')
 print(sku_order.head(n=10).to_string(index=False))
+sku_order.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\HighestSellingProducts.xlsx', index = False, header=True)
 
 
 #shows the most popular sku for each company
@@ -50,6 +52,7 @@ desc2 = data2.describe()
 ds2 = data2.sort_values(by='Search count', ascending = False)
 print("Top 10 Most Searched Products:")
 print(ds2.head(n=10).to_string(index=False))
+ds2.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\MostSearchedProducts.xlsx', index = False, header=True)
 
 
         #this data gives a list of product names and sku values for each product
@@ -73,6 +76,7 @@ sku_cons1 = sku_cons.groupby(['category_name','profit margin'], as_index=False)[
 sku_cons2 = sku_cons1.sort_values(by='Profit', axis = 0, ascending = False, ignore_index = True)
 print("Top 10 Most Profitable Products:")
 print(sku_cons2.head(n=10))
+sku_cons2.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\MostProfitableProducts.xlsx', index = False, header=True)
 # #print (datapd2.head)
 # datapd2['Profits'] = datapd2['sku'].map(sku.set_index('Lineitem sku')['Total'])
 # print(datapd2)
@@ -84,13 +88,13 @@ car['Month'] = car['Paid at'].dt.month
 car['Day'] = car['Paid at'].dt.day
 car1 = car.sort_values(by = 'Paid at', axis = 0, ascending = False, ignore_index = True)
 car2 = car1.groupby(['Year','Month','Lineitem sku'])['Company'].value_counts().to_frame('Count').reset_index()
-pd.set_option('max_rows', None)
+# pd.set_option('max_rows', None)
 # print(car2)
 car3 = car2.groupby(['Lineitem sku','Company'])['Count'].sum().to_frame('Transactions').reset_index()
 car3['Transaction Rate'] = car3.loc[:,'Transactions':].sum(axis=1)/12
 car4 = car3.sort_values(by=['Company','Transaction Rate'], axis=0, ascending = False, ignore_index=True)
 print(car4)
-
+car4.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\TransactionRatePerMonth.xlsx', index = False, header=True)
 
 qty = car1.groupby(['Year','Month','Lineitem sku','Company'])['Lineitem quantity'].sum().to_frame('Order QTY').reset_index()
 # qty['Monthly Units Rate'] = qty.loc[:,'Order QTY':].sum(axis=1)/12
@@ -99,4 +103,4 @@ qty2 = qty.groupby(['Company','Lineitem sku'])['Order QTY'].sum().to_frame('Tota
 qty2['Monthly Units Rate'] = qty2.loc[:,'Total Order QTY':].sum(axis=1)/12
 qty3 = qty2.sort_values(by=['Company','Monthly Units Rate'], axis=0, ascending = False, ignore_index=True)
 print(qty3)
-
+qty3.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\UnitSoldRatePerMonth.xlsx', index = False, header=True)
