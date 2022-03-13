@@ -3,11 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import plotly.express as px
-from sklearn.model_selection import train_test_split
-from sklearn.feature_selection import VarianceThreshold
 # from feature_selector import FeatureSelector
-
-data = pd.read_csv("UAH_customer_order_data.csv")
+#this UAH Customer order data includes the hour
+data = pd.read_csv("UAH_customer_order_data2.csv")
 desc = data.describe()
 # print(desc)
 data['Paid at'] = pd.to_datetime(data['Paid at'])
@@ -17,17 +15,15 @@ data['Day'] = data['Paid at'].dt.day
 data['dayofyear'] = data['Paid at'].dt.dayofyear
 data['dayofweek'] = data['Paid at'].dt.dayofweek
 data['weekofyear'] = data['Paid at'].dt.weekofyear
+data['Hour'] = data['Paid at'].dt.hour
 
-print(len(data.columns))
 
-fcd = data[['Total','Lineitem name','Lineitem sku','Lineitem quantity','Year','Month','Day', 'dayofyear','dayofweek','weekofyear']].dropna()
-# print(fcd)
-fcd2 = fcd.groupby(['Lineitem sku','Month'])['Lineitem quantity'].sum().reset_index()
+fcd = data[['Lineitem price','Lineitem quantity','Year','Month','Day', 'dayofyear','dayofweek','weekofyear','Hour']].dropna()
+fcd['Sales'] = fcd['Lineitem price'] * fcd['Lineitem quantity']
+#print(fcd)
+fcd2 = fcd.groupby(['Month'])['Sales'].sum().reset_index()
+print('Monthly Sales:')
 print(fcd2)
-x = fcd2.iloc[:, 1:3]
-y = fcd2.iloc[:, 0]
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state = 0)
-import statsmodels.api as sm
-ols = sm.OLS(y_train, sm.add_constant(x_train))
-lm1 = ols.fit()
-print(lm1.summary())
+fcd3 = fcd.groupby(['Hour'])['Lineitem quantity'].count()
+print('Orders by the hour:')
+print(fcd3)
