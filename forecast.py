@@ -21,12 +21,17 @@ data['Hour'] = data['Paid at'].dt.hour
 fcd = data[['Name','Local','Lineitem sku','Lineitem price','Lineitem quantity','Year','Month','Day', 'dayofyear','dayofweek','weekofyear','Hour']].dropna()
 fcd['Sales'] = fcd['Lineitem price'] * fcd['Lineitem quantity']
 #print(fcd)
-fcd2 = fcd.groupby(['Month'])['Sales'].sum().reset_index()
+# fcd2 = fcd.groupby(['Month'])['Sales'].sum().reset_index()
+fcd2 = fcd.groupby(['Month']).agg({'Sales':'sum'}).reset_index()
 print('Monthly Sales:')
 print(fcd2)
-fcd3 = fcd.groupby(['Hour'])['Lineitem quantity'].count()
+fcd2.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\MonthlySales.xlsx', index = False, header=True)
+# fcd3 = fcd.groupby(['Hour'])['Lineitem quantity'].count().to_frame('Orders').reset_index()
+#agg is used to sum the lineitem quanntity with respect to every hour
+fcd3 = fcd.groupby(['Hour']).agg({'Lineitem quantity':'sum'}).reset_index()
 print('Orders by the hour:')
 print(fcd3)
+fcd3.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\SalesPerHour.xlsx', index = False, header=True)
 
 # this is to see what combinations of data is used
 # new_data = fcd[fcd['Name'].duplicated(keep=False)]
