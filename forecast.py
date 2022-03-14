@@ -18,7 +18,7 @@ data['weekofyear'] = data['Paid at'].dt.weekofyear
 data['Hour'] = data['Paid at'].dt.hour
 
 
-fcd = data[['Lineitem price','Lineitem quantity','Year','Month','Day', 'dayofyear','dayofweek','weekofyear','Hour']].dropna()
+fcd = data[['Name','Local','Lineitem sku','Lineitem price','Lineitem quantity','Year','Month','Day', 'dayofyear','dayofweek','weekofyear','Hour']].dropna()
 fcd['Sales'] = fcd['Lineitem price'] * fcd['Lineitem quantity']
 #print(fcd)
 fcd2 = fcd.groupby(['Month'])['Sales'].sum().reset_index()
@@ -27,3 +27,18 @@ print(fcd2)
 fcd3 = fcd.groupby(['Hour'])['Lineitem quantity'].count()
 print('Orders by the hour:')
 print(fcd3)
+
+# this is to see what combinations of data is used
+# new_data = fcd[fcd['Name'].duplicated(keep=False)]
+# new_data['Product_Bundle'] = new_data.groupby('Name')['Lineitem sku'].transform(lambda x: ','.join(x))
+# new_data1 = new_data[['Name','Product_Bundle']].drop_duplicates()
+# print(new_data1.head())
+# from itertools import combinations
+# from collections import Counter
+
+# count = Counter()
+
+# for row in new_data1['Product_Bundle']:
+#     row_list = row.split(',')
+#     count.update(Counter(combination(row_list,2)))
+# print(count)

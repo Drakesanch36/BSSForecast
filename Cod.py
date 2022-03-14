@@ -22,9 +22,9 @@ clt_order.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\top10custom
 
 
 #this displays the most popular bought products
-sku_data2 = data[['Total','Lineitem name','Lineitem sku']].dropna()
+sku_data2 = data[['Total','Lineitem name','Lineitem sku','Lineitem quantity','Lineitem price']].dropna()
 sku_data2.rename(columns = {'Lineitem sku':'sku'}, inplace = True)
-sku = sku_data2.groupby(['Lineitem name','sku'], as_index=False)['Total'].sum()
+sku = sku_data2.groupby(['Lineitem name','sku','Lineitem quantity','Lineitem price'], as_index=False)['Total'].sum()
 sku_order = sku.sort_values(by='Total', ascending = False)
 tt_sku = np.sum(sku_order.loc[:,'Total':].values)
 sku_order['% Total Sales'] = sku_order.loc[:,'Total':].sum(axis=1)/tt_sku*100
