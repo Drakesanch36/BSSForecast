@@ -40,6 +40,7 @@ data['Paid at'] = pd.to_datetime(data['Paid at'])
 # data['weekofyear'] = data['Paid at'].dt.weekofyear
 
 df_sales = data[['Paid at','Lineitem quantity','Lineitem price']].dropna()
+print(df_sales)
 df_sales['Sales'] = df_sales['Lineitem quantity'] * df_sales['Lineitem price']
 # print(df_sales.head(10))
 
@@ -48,7 +49,7 @@ df_sales['Paid at'] = df_sales['Paid at'].dt.year.astype('str') + '-' + df_sales
 df_sales['Paid at'] = pd.to_datetime(df_sales['Paid at'])
 #groupby date and sum the sales
 df_sales = df_sales.groupby('Paid at')['Lineitem quantity'].sum().reset_index()
-print(df_sales)
+print(len(df_sales))
 
 #plot monthly sales
 # plot_data = [
