@@ -3,14 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 # %matplotlib inline
-
 import statsmodels.tsa.api as smt
 import statsmodels.api as sm
 from statsmodels.tools.eval_measures import rmse
 from datetime import datetime, date, time, timedelta
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-
 import pickle
+import fbprophet
 # from feature_selector import FeatureSelector
 #this UAH Customer order data includes the hour
 data = pd.read_csv("UAH_customer_order_data2.csv")
@@ -42,24 +41,6 @@ print(f"Overall average weekly sales: ${avg_weekly_sales}")
 avg_weekly_sales_12month = sf.Sales[-12:].mean()
 print(f"Last 12 months average weekly sales: ${avg_weekly_sales_12month}")
 
-
-# def time_plot(sf, x_col, y_col, title):
-#     fig, ax = plt.subplots(figsize=(15,5))
-#     sns.lineplot(x_col, y_col, data=sf, ax=ax, color='mediumblue', label='Total Sales')
-    
-#     second = sf.groupby(sf['Month'])[y_col].mean().reset_index()
-#     second.Month = pd.to_datetime(second.Month, format='%M')
-
-#     print(second.Month)
-#     sns.lineplot((second.Month + sf['Month']), y_col, data=second, ax=ax, color='red', label='Mean Sales')   
-    
-#     ax.set(xlabel = "Month",
-#            ylabel = "Sales",
-#            title = title)
-    
-#     sns.despine()
-    
-# time_plot(sf, 'Month', 'Sales', 'Monthly Sales Before Diff Transformation')
 
 sf_week = sf.groupby(['weekofyear']).agg({'Sales':'sum'}).reset_index()
 # print(sf_week)
