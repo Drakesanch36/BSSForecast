@@ -12,6 +12,10 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import pickle
 import fbprophet
 from fbprophet import Prophet
+
+print(np.__version__)
+print(fbprophet.__version__)
+
 # from feature_selector import FeatureSelector
 #this UAH Customer order data includes the hour
 data = pd.read_csv("UAH_customer_order_data2.csv")
