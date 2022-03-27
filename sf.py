@@ -4,6 +4,7 @@ from pandas import DataFrame
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import pyplot
+from sklearn.metrics import mean_absolute_error
 # import seaborn as sns
 # %matplotlib inline
 # import statsmodels.tsa.api as smt
@@ -118,5 +119,16 @@ y2 = forecast['yhat_lower']
 y3 = forecast['yhat_upper']
 #plt.plot(x3,x2)
 fig3 = plt.plot(x1,y3)
-plt.setp(plt.gca(),ylim=(0,2000))
+plt.setp(plt.gca(),ylim=(0,2500))
 plt.show()
+
+# calculate MAE between expected and predicted values for december
+y_true = df['y'][-12:].values
+y_pred = forecast['yhat'].values
+mae = mean_absolute_error(y_true, y_pred)
+print('MAE: %.3f' % mae)
+# plot expected vs actual
+pyplot.plot(y_true, label='Actual')
+pyplot.plot(y_pred, label='Predicted')
+pyplot.legend()
+pyplot.show()
