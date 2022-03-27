@@ -3,6 +3,7 @@ from pandas import to_datetime
 from pandas import DataFrame
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import pyplot
 # import seaborn as sns
 # %matplotlib inline
 # import statsmodels.tsa.api as smt
@@ -19,7 +20,7 @@ print(pd.__version__)
 
 # from feature_selector import FeatureSelector
 #this UAH Customer order data includes the hour
-data = pd.read_csv("UAH_customer_order_data2.csv")
+data = pd.read_csv("UAH_customer_order_data.csv")
 desc = data.describe()
 # print(desc)
 data['Paid at'] = pd.to_datetime(data['Paid at'])
@@ -31,14 +32,9 @@ data['dayofweek'] = data['Paid at'].dt.dayofweek
 data['weekofyear'] = data['Paid at'].dt.week
 data['Hour'] = data['Paid at'].dt.hour
 
-df = data[['Paid at', 'Lineitem quantity', 'Lineitem price']].dropna().sort_values(by="Paid at").reset_index()
-df['y'] = df['Lineitem quantity'] * df['Lineitem price']
-df.drop(['Lineitem quantity','Lineitem price'], axis=1)
-
 
 sf = data[['weekofyear','Lineitem price','Lineitem quantity']].dropna().sort_values(by="weekofyear",ascending=True).reset_index()
 sf['Sales'] = sf['Lineitem price'] * sf['Lineitem quantity']
-print(df)
 # print(sf)
 
 # Average weekly sales
@@ -77,15 +73,26 @@ sf_month = sf1.groupby(['Month']).agg({'Sales':'sum'}).reset_index()
 # print(sf_week)
 # plt.plot(sf_month.Month, sf_month.Sales)
 # plt.show()
+
+
+
+
+
+df = data[['Paid at', 'Lineitem quantity', 'Lineitem price']].dropna().sort_values(by="Paid at").reset_index()
+df['y'] = df['Lineitem quantity'] * df['Lineitem price']
+df.drop(['Lineitem quantity','Lineitem price'], axis=1)
+
 dfcons = df[['Paid at', 'y']].sort_values(by='Paid at',ascending=True)
 #columns need to be ds and y for it to run properly
 df1 = dfcons.rename(columns={"Paid at": "ds"})
-df1['ds'] = to_datetime(df1['ds'])
-print(df1)
+# df1['ds'] = to_datetime(df1['ds'], format='%Y%m%d')
+df2 = df1.groupby(['ds']).agg({'y':'sum'}).reset_index()
+# df1.loc[(df1['ds'] > '2021-01-01') & (df1['ds'] < '2022-01-01'), 'y'] = None
+print(df2)
 #defines model
 model = Prophet()
 #fit the model
-model.fit(df1)
+model.fit(df2)
 
 # define the period for which we want a prediction
 future = list()
@@ -100,3 +107,16 @@ future['ds']= to_datetime(future['ds'])
 forecast = model.predict(future)
 # summarize the forecast
 print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].head())
+model.plot(forecast)
+# pyplot.show()
+
+x1 = forecast['ds']
+#x3 = df['ds']
+x2 = df['y']
+y1 = forecast['yhat']
+y2 = forecast['yhat_lower']
+y3 = forecast['yhat_upper']
+#plt.plot(x3,x2)
+fig3 = plt.plot(x1,y3)
+plt.setp(plt.gca(),ylim=(0,2000))
+plt.show()
