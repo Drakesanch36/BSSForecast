@@ -81,9 +81,7 @@ forecast1 = model.predict(future1)
 print(forecast1[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail())
 
 model.plot(forecast1)
+plt.ylim(0,300)
 plt.show()
 model.plot_components(forecast1)
 plt.show()
-
-plot_plotly(model, forecast1)
-plot_components_plotly(model, forecast1)
