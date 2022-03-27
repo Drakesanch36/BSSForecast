@@ -1,17 +1,18 @@
 import pandas as pd
 from pandas import to_datetime
+from pandas import DataFrame
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
+# import seaborn as sns
 # %matplotlib inline
-import statsmodels.tsa.api as smt
-import statsmodels.api as sm
-from statsmodels.tools.eval_measures import rmse
+# import statsmodels.tsa.api as smt
+# import statsmodels.api as sm
+# from statsmodels.tools.eval_measures import rmse
 from datetime import datetime, date, time, timedelta
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+# from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import pickle
-import prophet
-from prophet import Prophet
+import fbprophet
+from fbprophet import Prophet
 
 print(np.__version__)
 print(pd.__version__)
@@ -95,5 +96,7 @@ future = DataFrame(future)
 future.columns = ['ds']
 future['ds']= to_datetime(future['ds'])
 
+#use the model to make a forecast
+forecast = model.predict(future)
 # summarize the forecast
 print(forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].head())
