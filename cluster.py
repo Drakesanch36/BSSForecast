@@ -47,7 +47,7 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 datapd2 = datapd[['sku','category_name']].dropna()
 combine = pd.merge(datapd2, cust, how="left", on="sku").dropna()
 sku_cons = combine[['Customer Type','sku','Lineitem quantity','category_name']]
-cm_type = sku_cons.groupby(['sku', 'Customer Type','category_name']).agg({'Lineitem quantity':'sum'}).sort_values(by=['Customer Type', 'Lineitem quantity'], ascending=False).reset_index().nlargest(3, 'Lineitem quantity')
+cm_type = sku_cons.groupby(['sku', 'Customer Type','category_name']).agg({'Lineitem quantity':'sum'}).sort_values(by=['Customer Type', 'Lineitem quantity'], ascending=False).reset_index()
 
 print(cm_type)
 
