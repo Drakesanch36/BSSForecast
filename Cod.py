@@ -7,13 +7,14 @@ data = pd.read_csv("UAH_customer_order_data.csv")
 desc = data.describe()
 # print(data)
 #company purchasing data is cpp
-cpp_data = data[['Company','Total']].dropna()
+cpp_data = data[['Company', 'Lineitem quantity', 'Lineitem price']].dropna()
 #print(cpp_data)
 #cpp_data.info()
-clt = cpp_data.groupby(['Company'], as_index=False)['Total'].sum()
-clt_order = clt.sort_values(by='Total', ascending = False)
-tt_custom = np.sum(clt_order.loc[:,'Total':].values)
-clt_order['% Total Sales'] = clt_order.loc[:,'Total':].sum(axis=1)/tt_custom*100
+cpp_data['Sales'] = cpp_data['Lineitem quantity'] * cpp_data['Lineitem price']
+clt = cpp_data.groupby(['Company'], as_index=False)['Sales'].sum()
+clt_order = clt.sort_values(by='Sales', ascending = False)
+tt_custom = np.sum(clt_order.loc[:,'Sales':].values)
+clt_order['% Total Sales'] = clt_order.loc[:,'Sales':].sum(axis=1)/tt_custom*100
             #displays all data
 # pd.set_option("display.max_rows", None, "display.max_columns", None)
 print('Top 10 Customers:')

@@ -51,12 +51,4 @@ cm_type = sku_cons.groupby(['sku', 'Customer Type','category_name']).agg({'Linei
 
 print(cm_type)
 
-# x = cm_type.iloc[:,1:3]
-# y = cm_type.iloc[:, 1]
-# x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state = 0)
-# print(cm_type.describe())
-# tree1 = DecisionTreeClassifier(random_state=0)
-# tree1.fit(x_train, y_train)
-# pred_test = tree1.predict(x_test)
-# pred_train = tree1.predict(x_train)
-# print("Test MSE:",mean_squared_error(pred_test,y_test))
+cm_type.to_excel (r'C:\Users\drake\Documents\My Tableau Repository\Top Products Per Customer Type.xlsx', index = False, header=True)
