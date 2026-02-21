@@ -1,0 +1,43 @@
+paths:
+  data_dir: data/raw
+  output_dir: output
+  figures_dir: output/figures
+  tables_dir: output/tables
+  report_path: output/BSS_Strategic_Report.html
+
+data_files:
+  orders: UAH_customer_order_data.csv
+  orders_hourly: UAH_customer_order_data2.csv
+  products: UAH_Product_Data.csv
+  categories: UAH_Category_PM.csv
+  search: UAH_Search.csv
+  search_all: UAH_Search_all.csv
+
+analysis:
+  top_n_customers: 10
+  top_n_products: 10
+  top_n_searches: 15
+  rfm_segments: 4
+  fuzzy_match_threshold: 70
+
+ml:
+  segmentation:
+    max_clusters: 8
+    random_state: 42
+  basket:
+    min_support: 0.02
+    min_lift: 1.0
+    use_categories: true
+  forecasting:
+    prophet_changepoint_prior: 0.05
+    forecast_days: 90
+    test_days: 30
+    arima_seasonal: true
+  churn:
+    recency_multiplier: 2.0
+
+plot:
+  style: seaborn-v0_8-whitegrid
+  figsize: [12, 6]
+  dpi: 150
+  palette: Set2
